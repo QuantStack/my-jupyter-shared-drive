@@ -11,7 +11,7 @@ import {
   INotebookWidgetFactory,
   NotebookWidgetFactory
 } from '@jupyterlab/notebook';
-import { ContentsManager } from '@jupyterlab/services';
+import { Contents, IDefaultDrive } from '@jupyterlab/services';
 import { RtcContentProvider } from '@jupyter/my-shared-docprovider';
 import {
   JupyterFrontEnd,
@@ -32,20 +32,15 @@ export const rtcContentProvider: JupyterFrontEndPlugin<ICollaborativeContentProv
     id: '@jupyter/docprovider-extension:content-provider',
     description: 'The RTC content provider',
     provides: ICollaborativeContentProvider,
+    requires: [IDefaultDrive],
     optional: [ITranslator],
     activate: (
       app: JupyterFrontEnd,
+      defaultDrive: Contents.IDrive,
       translator: ITranslator | null
     ): ICollaborativeContentProvider => {
       translator = translator ?? nullTranslator;
       const trans = translator.load('my-jupyter-shared-drive');
-      const defaultDrive = (app.serviceManager.contents as ContentsManager)
-        .defaultDrive;
-      if (!defaultDrive) {
-        throw Error(
-          'Cannot initialize content provider: default drive property not accessible on contents manager instance.'
-        );
-      }
       const registry = defaultDrive.contentProviderRegistry;
       if (!registry) {
         throw Error(
