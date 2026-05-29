@@ -29,7 +29,7 @@ import { ICollaborativeContentProvider } from '@jupyter/collaborative-drive';
  */
 export const rtcContentProvider: JupyterFrontEndPlugin<ICollaborativeContentProvider> =
   {
-    id: '@jupyter/docprovider-extension:content-provider',
+    id: '@jupyter/my-shared-docprovider-extension:content-provider',
     description: 'The RTC content provider',
     provides: ICollaborativeContentProvider,
     optional: [ITranslator],
